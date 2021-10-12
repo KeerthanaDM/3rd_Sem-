@@ -1,133 +1,305 @@
-#include<bits/stdc++.h>
-typedef struct Stack
-{
-  int top;
-  int capa;
-  int *arr;
-}st;
+#include<stdio.h>
+#include<stdlib.h>
 
-void create(st *s,int c)
+typedef struct myStack
 {
+
+int capacity;
+int *arr;
+int top;
+
+}S;
+
+void create(S *s,int c)
+{
+  s->capacity=c;
   s->top=-1;
-  s->capa=c;
-  s->arr=(int *)calloc(s->capa,sizeof(int));
-}
-
-
-int size(st *s)
-{
-  return s->top+1;
-}
-
-void push(st *s,int ele)
-{
-  if(s->top>=s->capa-1)
-{
-    printf("\n Stack Overflow");
-    return;
-}
-    s->top++;
-    s->arr[s->top]=ele;
-}
-
-int pop(st *s)
-{
-  if(s->top==-1)
-{
-  printf("\n Stack Underflow.");
-  return -1;
-}
-    int res=s->arr[s->top];
-    s->top--;
-    return res;
+  s->arr=(int *)calloc(s->capacity,sizeof(int));
 
 }
-int peek(st *s)
+
+void push(S *s,int element)
 {
-  if(s->top==-1)
+ if(s->top>s->capacity-1)
+ {
+ printf("Stack overflow!\n");
+ return;
+ }
+
+ s->top++;
+ s->arr[s->top]=element;
+
+
+}
+
+int pop(S *s)
+{
+
+if(s->top==-1)
+{
+printf("Stack underflow!\n");
+return -1;
+}
+
+int result=s->arr[s->top];
+s->top--;
+return result;
+
+}
+
+int peek(S *s)
+{
+
+if(s->top==-1)
+{
+printf("Stack underflow!\n");
+return -1;
+}
+
+return s->arr[s->top];
+
+}
+
+int size(S *s)
+{
+
+ return s->top+1;
+
+}
+
+void print(S *s)
+{
+  if(size(s)==0)
   {
-    printf("\nStack Underflow");
-    return -1;
-  }
-  return s->arr[s->top];
-}
-void print(st *s)
-{
-  int i;
-  printf("\n");
-  for(i=s->top;i>=0;i--)
-  printf("%d\t",s->arr[i]);
-  printf("\n");
-}
-
-void popNele(st *s,st *t,int n)
-{
-  int i=0;
-  if(size(s) < n)
-  {
-  printf("Error!");
+  printf("Stack is Empty\n");
   return;
+
   }
-  while(i<n)
+   printf("****Current Stack Content****\n");
+
+  for(int i=s->top;i>=0;i--)
   {
-    push(t,pop(s));
-    i++;
+
+  printf("%d \n",s->arr[i]);
+
   }
-  print(s);
-  print(t);
-  i=0;
-  while(i<n)
-  {
-    push(s,pop(t));
-    i++;
-  }
-  print(s);
 
 }
 
-int third_ele_from_top(st *s,st *t)
+int thirdFromTop(S *s,S *t)
 {
-  int i;
-  int y;
-  for(i=0;i<2;i++)
-  push(t,pop(s));
-  y=peek(s);
-  for(i=0;i<2;i++)
-  push(s,pop(t));
-  return y;
-}
 
-int third_ele_from_bottom(st *s,st *t)
+if(size(s)<3)
 {
-  int i;
-  int y;
-  for(i=0;i<size(s)-2;i++)
-  push(t,pop(s));
-  y=peek(s);
-  for(i=0;i<size(s)-2;i++)
-  push(s,pop(t));
-  return y;
+  printf("Error\n");
+
+ return-1;
+
+
 }
 
+int i=0;
+while(i<2)
+{
+
+push(t,pop(s));
+i++;
+
+}
+
+int Y=peek(s);
+
+ i=0;
+while(i<2)
+{
+
+push(s,pop(t));
+i++;
+
+}
+
+return Y;
+
+
+}
+
+
+
+void popNelement(S *s,S *t,int n)
+{
+
+ if(size(s)<n)
+ {
+   printf("Error\n");
+  return ;
+
+ }
+
+ int i=0;
+ while(i<n)
+ {
+ push(t,pop(s));
+ i++;
+ }
+
+ print(s);
+
+i=0;
+ while(i<n)
+ {
+ push(s,pop(t));
+ i++;
+ }
+
+
+
+}
+
+int thirdFromBottom(S *s,S *t)
+{
+
+if(size(s)<3)
+{
+  printf("Error\n");
+
+ return -1;
+
+
+}
+  int sz=size(s);
+  int i=0;
+ while(i<sz-3)
+ {
+   push(t,pop(s));
+   i++;
+
+ }
+
+int Y=peek(s);
+ i=0;
+ while(i<sz-3)
+ {
+   push(s,pop(t));
+   i++;
+
+ }
+
+
+return Y;
+
+
+}
 
 int main()
 {
-  st s;
-  st t;
-  int result;
-  create(&s,5);
-  create(&t,5);
-  push(&s,1);
-    push(&s,2);
-      push(&s,3);
-        push(&s,4);
-          push(&s,5);
-          print(&s);
-          result=third_ele_from_top(&s,&t);
-          printf("Third element from top is:%d",result);
-          popNele(&s,&t,3);
-          result=third_ele_from_bottom(&s,&t);
-          printf("\nThird element from bottom is:%d",result);
 
-  return 0;
+  S s,t;
+  int c;
+  int o;
+  int ele;
+  printf("Enter capacity of the stack\n");
+
+  scanf("%d",&c);
+
+  create(&s,c);
+  create(&t,c);
+
+  do
+  {
+    printf("\n");
+printf("****************************************************************\n");
+  printf("Enter The Option\n");
+  printf("1:push element equal to capacity of stack\n");
+  printf("2:pop\n");
+  printf("3:peek\n");
+  printf("4:Current size\n");
+  printf("5:To get Third element from top of the stack\n");
+  printf("6:To get Third element from Bottom of the stack\n");
+  printf("7:Pop N elements from the stack\n");
+    printf("8:Print current stack\n");
+    printf("9:Clear output\n");
+  printf("0:exit the program\n");
+  printf("****************************************************************\n");
+  printf("\n");
+  scanf("%d",&o);
+
+  int n;
+  int el;
+
+  switch(o)
+  {
+
+  case 1:
+         for(int i=0;i<c;i++)
+         {
+           if(size(&s)==c)
+           {
+             break;
+           }
+         printf("Enter the element to be pushed!\n");
+         scanf("%d",&el);
+         push(&s,el);
+         }
+         break;
+
+   case 2:
+
+
+         printf("%d Popped succesfully!\n",pop(&s));
+
+         break;
+
+          case 3:
+
+         if(peek(&s)==-1)
+         {
+
+         }
+         else
+         printf("Peek: %d \n",peek(&s));
+
+         break;
+
+          case 4:
+
+        printf("Current size: %d \n",size(&s));
+
+         break;
+
+
+          case 5:
+            printf("Third element from top is %d\n",thirdFromTop(&s,&t));
+
+
+            break;
+
+     case 6:
+
+
+        printf("Third element from Bottom is %d\n",thirdFromBottom(&s,&t));
+
+         break;
+
+            case 7:
+
+                    printf("Enter the value of N\n");
+                    scanf("%d",&n);
+                   popNelement(&s,&t,n);
+                   break;
+
+        case 8:
+                   print(&s);
+                   break;
+
+        case 9:
+           system("cls");
+           break;
+
+        default:
+                  printf("Invalid Input\n");
+                  break;
+
+  }
+  }while(o!=0);
+return 0;
 }
