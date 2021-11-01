@@ -1,60 +1,59 @@
-  ## Implementation of Round Robin Scheduling Algorithm in C
+   ## Implementation of Round Robin Scheduling Algorithm in C
 
-    #include<bits/stdc++.h>
-    int main()
+    #include <stdio.h>
+    void main()
     {
-      int n,bt[100],qt,count,i,wait[100];
-      printf("\nEnter the number of processes:");
-      scanf("%d",&n);
-      printf("\n Enter the burst times:");
-      for(i=0;i<n;i++){
-      scanf("%d",&bt[i]);
-      wait[i]=0;
-      }
-      printf("\nEnter the quantum time:");
-      scanf("%d",&qt);
-
-      int rembt[100],a[100];
-      for(i=0;i<n;i++)
+     int n, i,qt, count = 0, temp, sq = 0, bt[10], wt[10], tat[10], rem_bt[10];
+     float awt = 0, atat = 0;
+     printf("enter no of process\n");
+     scanf("%d", &n);
+     printf("enter burst time of process\n");
+     for (i = 0; i < n; i++)
+     {
+      scanf("%d", &bt[i]);
+      rem_bt[i] = bt[i];
+     }
+     printf("Enter quantum time\n");
+     scanf("%d", &qt);
+     while (1)
+     {
+      for (i = 0, count = 0; i < n; i++)
       {
-      rembt[i]=bt[i];
-      a[i]=0;
-      }
-      while(1)
-      {
-        for(i=1;i<=n;i++)
+       temp = qt;
+       if (rem_bt[i] == 0)
+       {
+        count++;
+        continue;
+       }
+       if (rem_bt[i] > qt)
+       {
+        rem_bt[i] = rem_bt[i] - qt;
+       }
+       else
+       {
+        if (rem_bt[i] >= 0)
         {
-
-          if(rembt[i-1]==0)
-          {
-          count++;
-          continue;
-          }
-          else if(rembt[i-1]<=qt)
-          {
-            wait[i]=wait[i-1]+rembt[i];
-            rembt[i-1]=0;
-            count++;
-            a[i]++;
-            printf("\n%d",wait[i]);
-          }
-          else
-          {
-          rembt[i-1]-=qt;
-          wait[i]=wait[i-1]+rembt[i];
-          printf("\n%d",wait[i]);
-          a[i]++;
-          }
+         temp = rem_bt[i];
+         rem_bt[i] = 0;
         }
-        if(count == n)
-        break;
+       }
+       sq = sq + temp;
+       tat[i] = sq;
       }
-      int avg=0;
-      for(i=0;i<n;i++)
-      {
-        avg+=wait[i]-(qt*a[i]);
-        printf("**\t%d",avg);
-      }
-      printf("\nAverage waiting time:%d",avg/n);
-      return 0;
+      if (n == count)
+       break;
+     }
+     printf("\n process\t burst time\t turnaround time\t waiting time\n");
+     for (i = 0; i < n; i++)
+     {
+      wt[i] = tat[i] - bt[i];
+      awt = awt + wt[i];
+      atat = atat + tat[i];
+      printf("\n%d\t%d\t\t%d\t\t%d\n", i + 1, bt[i], tat[i], wt[i]);
+     }
+     awt = awt / n;
+     atat = atat / n;
+     printf("average waiting time is %f\n", awt);
+     printf("average turnaround time is %f\n", atat);
     }
+
