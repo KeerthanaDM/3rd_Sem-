@@ -41,7 +41,7 @@
             if(bt[j]>bt[j+1])
             {
               temp=bt[j];
-              bt[j+1]=bt[j];
+              bt[j]=bt[j+1];
               bt[j+1]=temp;
 
               temp=b[j];
